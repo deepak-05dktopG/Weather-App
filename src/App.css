@@ -2,15 +2,32 @@
 
 }
 body{
+  height: 100svh;
+  font-family: "Sora", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
   margin: 0;
   padding: 0;
-  background-color: aqua;
   display: flex;
   justify-content: center;
+  color: black;
 }
-.container{
-  width: 100vh;
+.container1{
+  width: fit-content;
   height: 100vh;
+}
+.input_container{
+  display: flex;
+  border: 2px solid rgb(215, 213, 213);
+  max-width: fit-content;
+  border-radius: 10px;
+  min-width: 100%;
+}
+input{
+  width: 100%;
+  border-radius: 10px;
+  border: none;
+  background-color: transparent;
 }
 .searchicon{
   cursor: pointer;
@@ -23,7 +40,7 @@ body{
   
 }
 .element>img{
-  width: 20%;
+  width: 80px;
   border-radius: 30px;
 }
 .humidity-percent{
@@ -34,7 +51,7 @@ body{
 }
 
 .copyright{
-  font-size: small;
+  font-size: medium;
   color: black;
   font-weight: 500;
 }

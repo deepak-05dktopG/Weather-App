@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"homepage": "https://deepak-05dktopG.github.io/Weather-App",
+  "homepage": "https://deepak-05dktopG.github.io/Weather-App",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,7 +19,8 @@
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-loading-skeleton": "^3.5.0"
+    "react-loading-skeleton": "^3.5.0",
+    "vanta": "^0.5.24"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
