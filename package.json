@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-   "homepage": ".",
+   "homepage": "https://deepak-05dktopG.github.io/Weather-App",
 
 
   "scripts": {
@@ -38,6 +38,3 @@
     "vite": "^6.0.5"
   }
 }
-
-
-
