@@ -1,0 +1,45 @@
+*{
+
+}
+body{
+  margin: 0;
+  padding: 0;
+  background-color: aqua;
+  display: flex;
+  justify-content: center;
+}
+.container{
+  width: 100vh;
+  height: 100vh;
+}
+.searchicon{
+  cursor: pointer;
+  font-size: 25px;
+}
+.images>img{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%
+  
+}
+.element>img{
+  width: 20%;
+  border-radius: 30px;
+}
+.humidity-percent{
+  }
+
+.weather-type{
+  color: black;
+}
+
+.copyright{
+  font-size: small;
+  color: black;
+  font-weight: 500;
+}
+
+
+/* loader */
+.spinner-border{
+}
