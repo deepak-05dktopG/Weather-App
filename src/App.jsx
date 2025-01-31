@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './App.css'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -10,18 +10,20 @@ import clearsky from "./assets/clearsky.gif"
 import cloudsky from "./assets/cloudsky.gif"
 import drizzilesky from "./assets/drizzilesky.gif"
 import errorsky from "./assets/errorsky.gif"
-// import snowsky from "./assets/"
+import snowsky from "./assets/snowsky.gif"
 import humiditysky1 from "./assets/brokensky.gif"
-// import windsky1 from "./assets/"
-import showersky from"./assets/showersky.gif"
-// import rainsky from "./assets/"
-
+import mistsky from "./assets/mistsky.gif"
+import showersky from "./assets/showersky.gif"
+import rainsky from "./assets/rainysky.gif"
+import nightclearsky from "./assets/nightclearsky.gif"
+import nightcloudsky from "./assets/nightcloudsky.gif"
 import humiditysky from "./assets/newhumitidy.gif"
 import windsky from "./assets/newwind.gif"
-
+import thunderstorm from "./assets/thunderstormsky.gif"
 
 function App() {
   const [icon, setIcon] = useState()
+  const [iconCode, setIconCode] = useState()
   const [temp, setTemp] = useState(0)
   const [city, setCity] = useState()
   const [text, setText] = useState('Erode')
@@ -32,40 +34,61 @@ function App() {
   const [humidity, setHumitidy] = useState(0)
   const [citNotFound, setCityNotFound] = useState(false)
   const [loading, setloading] = useState(true)
-  const [sky,setSky]=useState('')
+  const [sky, setSky] = useState('')
+  const [skycolor, setSkyColor] = useState('rgb(11, 160, 190)')
+  const [cloudcolor, setCloudColor] = useState('rgb(176, 177, 177)')
+  const [sunColor, setSunColor] = useState('rgb(232, 216, 0)')
+  const [sunGlareColor, setSunGlareColor] = useState('rgb(26, 25, 24)')
+  const [sunlightColor, setSunlightColor] = useState('rgb(226, 216, 13)')
+  const [timeZone, setTimeZone] = useState('Europe/Berlin')
+  const [timeZoneCode, setTimeZoneCode] = useState('')
 
-    // useeffect for vanta.js wave effect
-    useEffect(() => {
-      WAVES({
-        el: "#vanta-clouds",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00
-      })
-    }, [])
-  
+  const inputref = useRef(null)
+  // useeffect for vanta.js wave effect
 
-  const weatherIconMap={
-    '01d':clearsky,
-    '01n':clearsky,
-    '02d':cloudsky,
-    '02n':cloudsky,
-    '03d':drizzilesky,
-    '03n':drizzilesky,
-    '04d':humiditysky1,
-    '04n':humiditysky1,
-    '09d':showersky,
-    '09n':showersky,
-    // '10d':rainsky,
-    // '10n':rainsky,
-    // '11d':thunderstorm,
-    // '11n':thunderstorm,
-    // '13d':snowsky,
-    // '13n':snowsky,
-    // '50d':mistsky,
-    // '50n':mistsky,
+  const weatherIconMap = {
+    '01d': clearsky,
+    '01n': nightclearsky,
+    '02d': cloudsky,
+    '02n': nightcloudsky,
+    '03d': drizzilesky,
+    '03n': drizzilesky,
+    '04d': humiditysky1,
+    '04n': humiditysky1,
+    '09d': showersky,
+    '09n': showersky,
+    '10d': rainsky,
+    '10n': rainsky,
+    '11d': thunderstorm,
+    '11n': thunderstorm,
+    '13d': snowsky,
+    '13n': snowsky,
+    '50d': mistsky,
+    '50n': mistsky,
+  }
+  const timZone = {
+    '0': 'Africa/Abidjan',
+    '3600': 'Africa/Algiers',
+    '3600': 'Africa/Lagos',
+    '3600': 'Europe/Berlin',
+    '0': 'Africa/Bissau',
+    '0': 'Africa/Casablanca',
+    '0': 'Europe/London',
+    '7200': 'Africa/Cairo',
+    '7200': 'Africa/Harare',
+    '7200': 'Africa/Johannesburg',
+    '7200': 'Africa/Bissau',
+    '-18000': 'America/New_York',
+    '-21600': 'America/Chicago',
+    '-25200': 'America/Denver',
+    '-28800': 'America/Los_Angeles',
+    '19800': 'Asia/Kolkata',
+    '32400': 'Asia/Tokyo',
+    '28800': 'Asia/Shanghai',
+    '10800': 'Europe/Moscow',
+    '32400': 'Asia/Tokyo',
+    '46800': 'Pacific/Auckland',
+
   }
 
   //search function
@@ -103,34 +126,66 @@ function App() {
       setTemp(Math.floor(data.main.temp_max))
       setloading(false)
       setSky(data.weather[0].description)
-      const weatherIconcode=data.weather[0].icon;
-      setIcon(weatherIconMap[weatherIconcode] || clearsky)
-      // setIcon(data)
-      
-      // if(1<50){
-      //   useEffect(() => {
-      //     WAVES({
-      //       el: "#vanta-clouds",
-      //       mouseControls: true,
-      //       touchControls: true,
-      //       gyroControls: false,
-      //       minHeight: 200.00,
-      //       minWidth: 200.00,
-      //       skyColor: 0x818c8d,
-      //       sunColor: 0x0,
-      //       sunGlareColor: 0x818181,
-      //       sunlightColor: 0xa9a9a9,
-      //       speed: 1.10
-      //     })
-      //   }, [])
-      //   console.log(temp)
-      // }
+      setIconCode(data.weather[0].icon)
+      setIcon(weatherIconMap[iconCode] || clearsky)
+      setTimeZoneCode(data.timezone)
+      setTimeZone(timZone[timeZoneCode])
+      console.log("timezzzzzzzzzzone:", timeZoneCode)
+      console.log("timezzzzzzzzzzone:", timeZone)
+
+
+
+
+      if (iconCode[2] == 'n') {
+        setSkyColor("rgb(0, 0, 0)")
+        setSunColor("rgb(244, 244, 244)")
+        setSunGlareColor('rgb(255, 255, 255)')
+        setSunlightColor('rgb(253, 253, 253)')
+        setCloudColor('rgb(94, 86, 86)')
+        inputref.current.style.color = 'white';
+      }
+      else if (iconCode == '02d' || iconCode == '03d') {
+        setSkyColor("rgb(11, 160, 190)")
+        setSunColor("rgb(119, 115, 97)")
+        setSunGlareColor('rgb(79, 75, 75)')
+        setSunlightColor('rgb(76, 76, 69)')
+        setCloudColor('rgb(176, 177, 177)')
+        inputref.current.style.color = 'black';
+      }
+      else if (iconCode == '04d' || iconCode == '09d' || iconCode == '10d' || iconCode == '11d' || iconCode == '13d' || iconCode == '50d') {
+        setSkyColor("rgb(91, 181, 206)")
+        setSunColor("rgb(119, 115, 97)")
+        setSunGlareColor('rgb(79, 75, 75)')
+        setSunlightColor('rgb(76, 76, 69)')
+        setCloudColor('rgb(153, 156, 156)')
+        inputref.current.style.color = 'black';
+
+      }
+      else if (iconCode == '01d') {
+        setSkyColor("rgb(11, 160, 190)")
+        setSunColor("rgb(255, 215, 17)")
+        setSunGlareColor('rgb(255, 206, 93)')
+        setSunlightColor('rgb(254, 251, 72)')
+        setCloudColor('rgb(176, 177, 177)')
+        inputref.current.style.color = 'black';
+
+      }
+      else {
+        setSkyColor("rgb(11, 160, 190)")
+        setSunColor("rgb(255, 226, 83)")
+        setSunGlareColor('rgb(255, 187, 28)')
+        setSunlightColor('rgb(255, 183, 0)')
+        setCloudColor('rgb(176, 177, 177)')
+        inputref.current.style.color = 'black';
+      }
+
+
+
     }
     catch (error) {
       console.log("An error occur:", error.message)
     }
-    finally {
-    }
+
 
   }
 
@@ -143,20 +198,42 @@ function App() {
 
 
 
+  useEffect(() => {
+    WAVES({
+      el: "#vanta-clouds",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      skyColor: skycolor,
+      cloudColor: cloudcolor,
+      cloudShadowColor: 0x213559,
+      sunColor: sunColor,
+      sunGlareColor: sunGlareColor,
+      sunlightColor: sunlightColor,
+      speed: wind<5 ? wind : 5
+    })
+  }, [icon])
+
+
+
   return (
     <>
 
-      <div className="container1  d-flex flex-column justify-content-between py-2 ">
+      <div  ref={inputref} className="container1  d-flex flex-column justify-content-between">
 
-        <div className="input_container ">
-          <input value={text} onChange={(e) => setText(e.target.value)} className='cityInput  p-2 ' type="text" placeholder="Enter City Name" />
-          <div className='searchicon p-1' onChange={Search}><img src={seachicon} width={50} alt="searchIcon" /></div>
+        <div className="input_container1 mt-3">
+          <div className='input_container'>
+            <input value={text} onChange={(e) => setText(e.target.value)} className='cityInput text-white  p-2 ' type="text" placeholder="Enter City Name" />
+            <div className='searchicon p-1' onChange={Search}><img src={seachicon} width={50} className='border rounded-4 bg-white' alt="searchIcon" /></div>
+          </div>
         </div>
 
-        <div><WeatherDetails icon={icon} sky={sky}  temp={temp} city={city} country={country} latitude={latitude} longitude={longitude} humidity={humidity} wind={wind} loading={loading} />
+        <div><WeatherDetails timeZone={timeZone} icon={icon} inputref={inputref} sky={sky} temp={temp} city={city} country={country} latitude={latitude} longitude={longitude} humidity={humidity} wind={wind} loading={loading} />
         </div>
 
-        <div className='copyright text-center mt-3'>Done by <a href="https://deepakdigitalcraft.tech/">Deepakkumar</a> </div>
+        <div className='copyright text-center'>Done by <a href="https://deepakdigitalcraft.tech/">Deepakkumar</a> </div>
 
 
       </div>
@@ -169,12 +246,34 @@ export default App
 
 
 // Weathrer details function
-const WeatherDetails = ({ sky,icon, temp, country, city, latitude, longitude, humidity, wind, loading }) => {
+const WeatherDetails = ({ timeZone,sky, icon, temp, country, city, latitude, longitude, humidity, wind, loading, inputref }) => {
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  // useEffect(()=>{
+
+  //   console.log("eeeeee:",timeZone)
+  // },[])
+  
+
   const loaderanime = <div class="spinner-border " role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 
-  return (
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date())
+      return () => clearInterval(interval);
+    }, [1000])
+
+  }, [])
+
+// useEffect(() => {
+//     console.log("Time Zone Changed:", timeZone);
+// }, [timeZone]); // Only log when timeZone prop changes
+
+// const finaltimezone=`'${timeZone}'`
+
+   return (
     <>
 
 
@@ -184,7 +283,6 @@ const WeatherDetails = ({ sky,icon, temp, country, city, latitude, longitude, hu
       </p> : <div className="images text-center p-2">
         <img src={icon} alt="clearsky" />
       </div>}
-
 
       <div className="temp text-center fs-5 fw-bold"> {loading ? <p className="card-text placeholder-glow">
         <span className="placeholder col-7 rounded  "></span>
@@ -200,6 +298,19 @@ const WeatherDetails = ({ sky,icon, temp, country, city, latitude, longitude, hu
       <div className="country text-center "> {loading ? <p className="card-text placeholder-glow">
         <span className="placeholder col-2 rounded  "></span>
       </p> : <span className='fw-bold'>{country}</span>}</div>
+
+      {/* <div className='text-center'>{Hour}:{Miniute}:{Seconds}</div> */}
+
+      <h5 className='text-center fw-bold text-warning'>
+        {currentTime.toLocaleTimeString('es-ES', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true, // Change to true for 12-hour format
+          timeZone:timeZone
+        })}
+      </h5>
+
       <div className="cord d-flex justify-content-around mt-3">
         <div className='d-flex flex-column align-items-center'>
           <div className="lat">Latitude <br /> </div>
@@ -212,17 +323,17 @@ const WeatherDetails = ({ sky,icon, temp, country, city, latitude, longitude, hu
         </div>
       </div>
 
-      <div className="data-container d-flex justify-content-between mt-4 text-center">
+      <div className="data-container  d-flex justify-content-between mt-4 text-center">
         <div className="element d-flex flex-column justify-content-center align-items-center gap-1">
           <img width={30} src={humiditysky} alt="Humidity" />
           <div className='humidity-percent text-primary'>{loading ? loaderanime : <span className='fw-bold fs-4'> {humidity}%</span>}</div>
-          <div className="weather-type">Humitidy</div>
+          <div className="weather-type " ref={inputref}>Humitidy</div>
         </div>
 
-        <div className="element d-flex flex-column justify-content-center align-items-center gap-1">  
+        <div className="element d-flex flex-column justify-content-center align-items-center gap-1">
           <img width={30} src={windsky} alt="Wind" />
           <div className='humidity-percent text-white'>{loading ? loaderanime : <span className='fw-bold fs-4 text-secondary'> {wind}km/h</span>}</div>
-          <div className="weather-type ">Wind Speed</div>
+          <div className="weather-type " ref={inputref}>Wind Speed</div>
         </div>
       </div>
 
