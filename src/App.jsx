@@ -193,7 +193,9 @@ function App() {
 
 
   useEffect(() => {
-    Search()
+    setInterval(() => {
+      Search()
+    }, 4000);
   }, [Search])
 
 
@@ -212,7 +214,7 @@ function App() {
       sunColor: sunColor,
       sunGlareColor: sunGlareColor,
       sunlightColor: sunlightColor,
-      speed: wind<5 ? wind : 5
+      speed: wind < 5 ? wind : 5
     })
   }, [icon])
 
@@ -221,22 +223,37 @@ function App() {
   return (
     <>
 
-      <div  ref={inputref} className="container1  d-flex flex-column justify-content-between">
+      {loading ? <div className="container">
+        <div class="cloud front">
+          <span className="left-front"></span>
+          <span className="right-front"></span>
+        </div>
+        <span className="sun sunshine"></span>
+        <span className="sun d-flex align-items-center justify-content-center text-white">Loading...</span>
+        <div className="cloud back">
+          <span className="left-back"></span>
+          <span className="right-back"></span>
+        </div>
+      </div> :
 
-        <div className="input_container1 mt-3">
-          <div className='input_container'>
-            <input value={text} onChange={(e) => setText(e.target.value)} className='cityInput text-white  p-2 ' type="text" placeholder="Enter City Name" />
-            <div className='searchicon p-1' onChange={Search}><img src={seachicon} width={50} className='border rounded-4 bg-white' alt="searchIcon" /></div>
+        <div ref={inputref}  className="container1  d-flex flex-column justify-content-between">
+
+          <div className="input_container1 mt-3">
+            <div className='input_container'>
+              <input value={text} onChange={(e) => setText(e.target.value)} className='cityInput text-white  p-2 ' type="text" placeholder="Enter City Name" />
+              <div className='searchicon p-1' onChange={Search}><img src={seachicon} width={50} className='border rounded-4 bg-white' alt="searchIcon" /></div>
+            </div>
           </div>
+
+          <div><WeatherDetails timeZone={timeZone} icon={icon} inputref={inputref} sky={sky} temp={temp} city={city} country={country} latitude={latitude} longitude={longitude} humidity={humidity} wind={wind} loading={loading} />
+          </div>
+
+          <div className='copyright text-center'>Done by <a href="https://deepakdigitalcraft.tech/">Deepakkumar</a> </div>
+
+
         </div>
 
-        <div><WeatherDetails timeZone={timeZone} icon={icon} inputref={inputref} sky={sky} temp={temp} city={city} country={country} latitude={latitude} longitude={longitude} humidity={humidity} wind={wind} loading={loading} />
-        </div>
-
-        <div className='copyright text-center'>Done by <a href="https://deepakdigitalcraft.tech/">Deepakkumar</a> </div>
-
-
-      </div>
+      }
 
 
     </>
@@ -246,14 +263,14 @@ export default App
 
 
 // Weathrer details function
-const WeatherDetails = ({ timeZone,sky, icon, temp, country, city, latitude, longitude, humidity, wind, loading, inputref }) => {
+const WeatherDetails = ({ timeZone, sky, icon, temp, country, city, latitude, longitude, humidity, wind, loading, inputref }) => {
   const [currentTime, setCurrentTime] = useState(new Date())
 
   // useEffect(()=>{
 
   //   console.log("eeeeee:",timeZone)
   // },[])
-  
+
 
   const loaderanime = <div class="spinner-border " role="status">
     <span class="visually-hidden">Loading...</span>
@@ -267,13 +284,13 @@ const WeatherDetails = ({ timeZone,sky, icon, temp, country, city, latitude, lon
 
   }, [])
 
-// useEffect(() => {
-//     console.log("Time Zone Changed:", timeZone);
-// }, [timeZone]); // Only log when timeZone prop changes
+  // useEffect(() => {
+  //     console.log("Time Zone Changed:", timeZone);
+  // }, [timeZone]); // Only log when timeZone prop changes
 
-// const finaltimezone=`'${timeZone}'`
+  // const finaltimezone=`'${timeZone}'`
 
-   return (
+  return (
     <>
 
 
@@ -307,7 +324,7 @@ const WeatherDetails = ({ timeZone,sky, icon, temp, country, city, latitude, lon
           minute: '2-digit',
           second: '2-digit',
           hour12: true, // Change to true for 12-hour format
-          timeZone:timeZone
+          timeZone: timeZone
         })}
       </h5>
 
