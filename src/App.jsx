@@ -124,7 +124,11 @@ function App() {
       setCountry(data.sys.country)
       setWind(data.wind.speed)
       setTemp(Math.floor(data.main.temp_max))
-      setloading(false)
+
+      setInterval(() => {
+        setloading(false)
+      }, 3000);
+
       setSky(data.weather[0].description)
       setIconCode(data.weather[0].icon)
       setIcon(weatherIconMap[iconCode] || clearsky)
@@ -189,13 +193,8 @@ function App() {
 
   }
 
-
-
-
   useEffect(() => {
-    setInterval(() => {
-      Search()
-    }, 4000);
+    Search()
   }, [Search])
 
 
@@ -236,7 +235,7 @@ function App() {
         </div>
       </div> :
 
-        <div ref={inputref}  className="container1  d-flex flex-column justify-content-between">
+        <div ref={inputref} className="container1  d-flex flex-column justify-content-between">
 
           <div className="input_container1 mt-3">
             <div className='input_container'>
